@@ -70,6 +70,20 @@
 </head>
 <body>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                {% if category == 'logout' %}
+                    <script>
+                        window.onload = function() {
+                            alert("{{ message }}");
+                        };
+                    </script>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
     <div class="login-container">
         <h2>Acceso al Sistema</h2>
         
