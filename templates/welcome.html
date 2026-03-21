@@ -4,39 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienvenido</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-top: #edf8f5;
+            --bg-bottom: #fff4df;
+            --text-main: #1f2a2a;
+            --text-soft: #536162;
+            --primary: #0f6d53;
+            --danger: #c83d2b;
+            --danger-strong: #ab2f20;
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --card-border: rgba(255, 255, 255, 0.72);
+            --shadow: 0 20px 50px rgba(23, 43, 42, 0.15);
+        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            text-align: center;
-            padding-top: 50px;
+            font-family: 'Manrope', sans-serif;
+            background: linear-gradient(145deg, var(--bg-top), var(--bg-bottom));
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before,
+        body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        body::before {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle at center, rgba(15, 109, 83, 0.2), rgba(15, 109, 83, 0));
+            top: -110px;
+            left: -80px;
+        }
+        body::after {
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle at center, rgba(242, 120, 33, 0.16), rgba(242, 120, 33, 0));
+            bottom: -140px;
+            right: -90px;
         }
         .welcome-container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 620px;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            padding: 34px 28px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            animation: riseIn 0.75s ease;
         }
         .logo-institucional {
             max-width: 250px;
             height: auto;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         h1 {
-            color: #0056b3;
+            color: var(--primary);
+            margin: 8px 0 10px;
+            font-size: 34px;
+            letter-spacing: -0.7px;
+        }
+        p {
+            margin: 0;
+            color: var(--text-soft);
+            font-size: 17px;
         }
         .btn-logout {
             display: inline-block;
             margin-top: 30px;
-            padding: 10px 20px;
-            background-color: #dc3545;
+            padding: 11px 22px;
+            background: linear-gradient(90deg, var(--danger), #df513f);
             color: white;
             text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
         }
         .btn-logout:hover {
-            background-color: #c82333;
+            background: linear-gradient(90deg, var(--danger-strong), var(--danger));
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(200, 61, 43, 0.28);
+        }
+        @keyframes riseIn {
+            from {
+                opacity: 0;
+                transform: translateY(22px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @media (max-width: 480px) {
+            .welcome-container {
+                border-radius: 18px;
+                padding: 26px 18px;
+            }
+            .logo-institucional {
+                max-width: 190px;
+            }
+            h1 {
+                font-size: 28px;
+            }
+            p {
+                font-size: 15px;
+            }
         }
     </style>
 </head>

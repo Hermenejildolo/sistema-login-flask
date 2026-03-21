@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Iniciar Sesión</title>
+    <title>Registro de Usuario</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-top: #e9f8f3;
-            --bg-bottom: #fef4dc;
+            --bg-top: #f0fbf7;
+            --bg-bottom: #fff0df;
             --primary: #0f6d53;
-            --primary-strong: #0a5a44;
-            --text-main: #1f2a2a;
-            --text-soft: #536162;
+            --primary-strong: #095c44;
+            --text-main: #1e2a2a;
+            --text-soft: #5a6667;
             --danger-text: #8d1f17;
             --danger-bg: #ffe8e5;
-            --success-text: #145c30;
-            --success-bg: #e6f7ea;
-            --card-bg: rgba(255, 255, 255, 0.86);
-            --card-border: rgba(255, 255, 255, 0.7);
+            --card-bg: rgba(255, 255, 255, 0.88);
+            --card-border: rgba(255, 255, 255, 0.72);
             --shadow: 0 18px 50px rgba(23, 43, 42, 0.16);
         }
         body {
@@ -42,37 +40,36 @@
             position: absolute;
             border-radius: 50%;
             z-index: 0;
-            filter: blur(2px);
         }
         body::before {
             width: 320px;
             height: 320px;
-            background: radial-gradient(circle at center, rgba(15, 109, 83, 0.22), rgba(15, 109, 83, 0));
-            top: -90px;
-            left: -70px;
+            background: radial-gradient(circle at center, rgba(15, 109, 83, 0.2), rgba(15, 109, 83, 0));
+            top: -110px;
+            left: -60px;
         }
         body::after {
-            width: 360px;
-            height: 360px;
-            background: radial-gradient(circle at center, rgba(242, 120, 33, 0.2), rgba(242, 120, 33, 0));
-            bottom: -120px;
-            right: -90px;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at center, rgba(242, 120, 33, 0.16), rgba(242, 120, 33, 0));
+            right: -110px;
+            bottom: -130px;
         }
-        .login-container {
+        .register-container {
             position: relative;
             z-index: 1;
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            padding: 34px 30px;
+            padding: 32px 30px;
             border-radius: 22px;
             box-shadow: var(--shadow);
             width: 100%;
-            max-width: 380px;
+            max-width: 420px;
             animation: floatIn 0.7s ease;
         }
-        .login-container h2 {
+        .register-container h2 {
             text-align: center;
             color: var(--text-main);
             margin: 0 0 8px;
@@ -141,27 +138,18 @@
             font-size: 14px;
             text-align: center;
         }
-        .success-message {
-            color: var(--success-text);
-            background-color: var(--success-bg);
-            padding: 11px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-size: 14px;
-            text-align: center;
-        }
-        .register-link {
-            margin-top: 18px;
+        .back-link {
+            margin-top: 16px;
             text-align: center;
             color: var(--text-soft);
             font-size: 14px;
         }
-        .register-link a {
+        .back-link a {
             color: var(--primary);
             text-decoration: none;
             font-weight: 700;
         }
-        .register-link a:hover {
+        .back-link a:hover {
             text-decoration: underline;
         }
         @keyframes floatIn {
@@ -175,60 +163,48 @@
             }
         }
         @media (max-width: 480px) {
-            .login-container {
+            .register-container {
                 padding: 26px 20px;
                 border-radius: 18px;
             }
-            .login-container h2 {
+            .register-container h2 {
                 font-size: 24px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="register-container">
+        <h2>Registro de Usuario</h2>
+        <p class="subtitle">Crea tu cuenta para acceder al sistema</p>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
-                {% if category == 'logout' %}
-                    <script>
-                        window.onload = function() {
-                            alert("{{ message }}");
-                        };
-                    </script>
-                {% elif category == 'register_success' %}
-                    <div class="success-message">{{ message }}</div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
-
-    <div class="login-container">
-        <h2>Acceso al Sistema</h2>
-        <p class="subtitle">Ingresa con tus credenciales para continuar</p>
-        
         {% if error %}
-            <div class="error-message">
-                {{ error }}
-            </div>
+            <div class="error-message">{{ error }}</div>
         {% endif %}
 
-        <form method="POST" action="/">
+        <form method="POST" action="{{ url_for('register') }}">
             <div class="form-group">
-                <label for="username">Usuario</label>
-                <input type="text" id="username" name="username" required autocomplete="off">
+                <label for="username">Nombre de usuario</label>
+                <input type="text" id="username" name="username" value="{{ form_data.username }}" required autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+                <input type="email" id="email" name="email" value="{{ form_data.email }}" required autocomplete="off">
             </div>
             <div class="form-group">
                 <label for="password">Contraseña</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            <button type="submit" class="btn-submit">Ingresar</button>
+            <div class="form-group">
+                <label for="confirm_password">Confirmar contraseña</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+            </div>
+            <button type="submit" class="btn-submit">Registrarme</button>
         </form>
 
-        <div class="register-link">
-            ¿No tienes cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a>
+        <div class="back-link">
+            ¿Ya tienes cuenta? <a href="{{ url_for('login') }}">Volver a iniciar sesión</a>
         </div>
     </div>
-
 </body>
 </html>
