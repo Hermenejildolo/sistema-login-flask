@@ -80,6 +80,7 @@ def login():
 def register():
     """Maneja el registro de nuevos usuarios con validaciones de negocio."""
     error = None
+    empty_fields = []
     form_data = {
         'username': '',
         'email': ''
@@ -94,14 +95,26 @@ def register():
         form_data['username'] = username
         form_data['email'] = email
 
-        if not username or not email or not password or not confirm_password:
+        if not username:
+            empty_fields.append('username')
+        if not email:
+            empty_fields.append('email')
+        if not password:
+            empty_fields.append('password')
+        if not confirm_password:
+            empty_fields.append('confirm_password')
+
+        if empty_fields:
             error = 'Todos los campos son obligatorios.'
         elif not re.match(EMAIL_REGEX, email):
             error = 'El correo electrónico no tiene un formato válido.'
+            empty_fields = ['email']
         elif len(password) < 6:
             error = 'La contraseña debe tener mínimo 6 caracteres.'
+            empty_fields = ['password']
         elif password != confirm_password:
             error = 'La contraseña y su confirmación no coinciden.'
+            empty_fields = ['password', 'confirm_password']
         else:
             with sqlite3.connect(DB_NAME) as conn:
                 cursor = conn.cursor()
@@ -109,10 +122,12 @@ def register():
                 cursor.execute('SELECT 1 FROM usuarios WHERE username = ?', (username,))
                 if cursor.fetchone():
                     error = 'El nombre de usuario ya existe. Elija otro.'
+                    empty_fields = ['username']
                 else:
                     cursor.execute('SELECT 1 FROM usuarios WHERE email = ?', (email,))
                     if cursor.fetchone():
                         error = 'El correo electrónico ya está registrado.'
+                        empty_fields = ['email']
                     else:
                         cursor.execute(
                             'INSERT INTO usuarios (username, email, password) VALUES (?, ?, ?)',
@@ -122,7 +137,7 @@ def register():
                         flash('Registro exitoso. Ahora puede iniciar sesión.', 'register_success')
                         return redirect(url_for('login'))
 
-    return render_template('register.html', error=error, form_data=form_data)
+    return render_template('register.html', error=error, form_data=form_data, empty_fields=empty_fields)
 
 @app.route('/welcome')
 def welcome():

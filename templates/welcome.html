@@ -102,6 +102,33 @@
             transform: translateY(-1px);
             box-shadow: 0 10px 20px rgba(200, 61, 43, 0.28);
         }
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: min(92vw, 420px);
+        }
+        .toast {
+            padding: 14px 16px;
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            background: linear-gradient(90deg, #147a5b, #1d9a75);
+            box-shadow: 0 16px 34px rgba(23, 43, 42, 0.18);
+            animation: slideDown 0.35s ease;
+            opacity: 1;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .toast-hide {
+            opacity: 0;
+            transform: translateY(-12px);
+        }
         @keyframes riseIn {
             from {
                 opacity: 0;
@@ -110,6 +137,16 @@
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
         }
         @media (max-width: 480px) {
@@ -133,16 +170,13 @@
 
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for category, message in messages %}
-                {% if category == 'success' %}
-                    <script>
-                        
-                        window.onload = function() {
-                            alert("{{ message }}");
-                        };
-                    </script>
-                {% endif %}
-            {% endfor %}
+            <div class="toast-container">
+                {% for category, message in messages %}
+                    {% if category == 'success' %}
+                        <div class="toast">{{ message }}</div>
+                    {% endif %}
+                {% endfor %}
+            </div>
         {% endif %}
     {% endwith %}
 
@@ -154,6 +188,22 @@
 
         <a href="{{ url_for('logout') }}" class="btn-logout">Cerrar Sesión</a>
     </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.toast').forEach(function(toast, index) {
+                var delay = 3200 + (index * 250);
+
+                window.setTimeout(function() {
+                    toast.classList.add('toast-hide');
+
+                    window.setTimeout(function() {
+                        toast.remove();
+                    }, 250);
+                }, delay);
+            });
+        });
+    </script>
 
 </body>
 </html>

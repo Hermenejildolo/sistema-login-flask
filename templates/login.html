@@ -150,6 +150,38 @@
             font-size: 14px;
             text-align: center;
         }
+        .toast-container {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: min(92vw, 420px);
+        }
+        .toast {
+            padding: 14px 16px;
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            box-shadow: 0 16px 34px rgba(23, 43, 42, 0.18);
+            animation: slideDown 0.35s ease;
+            opacity: 1;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .toast-success {
+            background: linear-gradient(90deg, #147a5b, #1d9a75);
+        }
+        .toast-info {
+            background: linear-gradient(90deg, #1f5e7a, #2b86ab);
+        }
+        .toast-hide {
+            opacity: 0;
+            transform: translateY(-12px);
+        }
         .register-link {
             margin-top: 18px;
             text-align: center;
@@ -174,6 +206,16 @@
                 transform: translateY(0) scale(1);
             }
         }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
         @media (max-width: 480px) {
             .login-container {
                 padding: 26px 20px;
@@ -189,17 +231,13 @@
 
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-            {% for category, message in messages %}
-                {% if category == 'logout' %}
-                    <script>
-                        window.onload = function() {
-                            alert("{{ message }}");
-                        };
-                    </script>
-                {% elif category == 'register_success' %}
-                    <div class="success-message">{{ message }}</div>
-                {% endif %}
-            {% endfor %}
+            <div class="toast-container">
+                {% for category, message in messages %}
+                    <div class="toast {% if category == 'logout' %}toast-info{% else %}toast-success{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
         {% endif %}
     {% endwith %}
 
@@ -229,6 +267,22 @@
             ¿No tienes cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a>
         </div>
     </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.toast').forEach(function(toast, index) {
+                var delay = 3200 + (index * 250);
+
+                window.setTimeout(function() {
+                    toast.classList.add('toast-hide');
+
+                    window.setTimeout(function() {
+                        toast.remove();
+                    }, 250);
+                }, delay);
+            });
+        });
+    </script>
 
 </body>
 </html>
