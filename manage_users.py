@@ -7,17 +7,17 @@ DB_NAME = "sistema_login.db"
 
 def list_users(conn):
     cursor = conn.cursor()
-    cursor.execute("SELECT id, username, COALESCE(email, '') FROM usuarios ORDER BY id ASC")
+    cursor.execute("SELECT id, username, COALESCE(email, ''), COALESCE(rol, 'estudiante') FROM usuarios ORDER BY id ASC")
     rows = cursor.fetchall()
 
     if not rows:
         print("No hay usuarios registrados.")
         return
 
-    print("ID | Username | Email")
+    print("ID | Username | Email | Rol")
     print("-" * 50)
     for row in rows:
-        print(f"{row[0]} | {row[1]} | {row[2]}")
+        print(f"{row[0]} | {row[1]} | {row[2]} | {row[3]}")
 
 
 def delete_by_id(conn, user_id):

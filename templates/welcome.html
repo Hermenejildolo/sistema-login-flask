@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenido</title>
+    <title>Panel del Sistema</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -14,189 +14,397 @@
             --text-main: #1f2a2a;
             --text-soft: #536162;
             --primary: #0f6d53;
+            --primary-dark: #0a5a44;
             --danger: #c83d2b;
-            --danger-strong: #ab2f20;
-            --card-bg: rgba(255, 255, 255, 0.88);
-            --card-border: rgba(255, 255, 255, 0.72);
-            --shadow: 0 20px 50px rgba(23, 43, 42, 0.15);
+            --warn: #99620d;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-border: rgba(255, 255, 255, 0.7);
+            --shadow: 0 16px 40px rgba(23, 43, 42, 0.14);
+        }
+        * {
+            box-sizing: border-box;
         }
         body {
             font-family: 'Manrope', sans-serif;
             background: linear-gradient(145deg, var(--bg-top), var(--bg-bottom));
             color: var(--text-main);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            margin: 0;
             min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-            box-sizing: border-box;
-            position: relative;
-            overflow: hidden;
         }
-        body::before,
-        body::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-            z-index: 0;
-        }
-        body::before {
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle at center, rgba(15, 109, 83, 0.2), rgba(15, 109, 83, 0));
-            top: -110px;
-            left: -80px;
-        }
-        body::after {
-            width: 380px;
-            height: 380px;
-            background: radial-gradient(circle at center, rgba(242, 120, 33, 0.16), rgba(242, 120, 33, 0));
-            bottom: -140px;
-            right: -90px;
-        }
-        .welcome-container {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 620px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 24px;
-            box-shadow: var(--shadow);
-            padding: 34px 28px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            animation: riseIn 0.75s ease;
-        }
-        .logo-institucional {
-            max-width: 250px;
-            height: auto;
-            margin-bottom: 10px;
-        }
-        h1 {
-            color: var(--primary);
-            margin: 8px 0 10px;
-            font-size: 34px;
-            letter-spacing: -0.7px;
-        }
-        p {
-            margin: 0;
-            color: var(--text-soft);
-            font-size: 17px;
-        }
-        .btn-logout {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 11px 22px;
-            background: linear-gradient(90deg, var(--danger), #df513f);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            font-weight: 700;
-            transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
-        }
-        .btn-logout:hover {
-            background: linear-gradient(90deg, var(--danger-strong), var(--danger));
-            transform: translateY(-1px);
-            box-shadow: 0 10px 20px rgba(200, 61, 43, 0.28);
+        .page {
+            width: min(1180px, 96vw);
+            margin: 24px auto;
+            display: grid;
+            gap: 16px;
         }
         .toast-container {
             position: fixed;
-            top: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
+            top: 20px;
+            right: 20px;
+            z-index: 20;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            width: min(92vw, 420px);
+            gap: 10px;
+            width: min(92vw, 360px);
         }
         .toast {
-            padding: 14px 16px;
-            border-radius: 14px;
-            color: #ffffff;
-            font-size: 14px;
+            border-radius: 12px;
+            padding: 12px 14px;
+            color: #fff;
+            font-size: 13px;
             font-weight: 700;
-            background: linear-gradient(90deg, #147a5b, #1d9a75);
-            box-shadow: 0 16px 34px rgba(23, 43, 42, 0.18);
-            animation: slideDown 0.35s ease;
+            box-shadow: 0 10px 24px rgba(23, 43, 42, 0.2);
             opacity: 1;
+            transform: translateY(0);
             transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+        .toast-success {
+            background: linear-gradient(90deg, #147a5b, #1d9a75);
+        }
+        .toast-error {
+            background: linear-gradient(90deg, #b53424, #d34d3d);
+        }
+        .toast-info {
+            background: linear-gradient(90deg, #7f520e, #a56d15);
+        }
+        .toast-rnf {
+            background: linear-gradient(90deg, #6f4c10, #927019);
         }
         .toast-hide {
             opacity: 0;
-            transform: translateY(-12px);
+            transform: translateY(-10px);
         }
-        @keyframes riseIn {
-            from {
-                opacity: 0;
-                transform: translateY(22px) scale(0.98);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        .top {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            padding: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-18px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .title {
+            margin: 0;
+            font-size: 28px;
+            color: var(--primary);
         }
-        @media (max-width: 480px) {
-            .welcome-container {
-                border-radius: 18px;
-                padding: 26px 18px;
+        .meta {
+            margin: 4px 0 0;
+            color: var(--text-soft);
+            font-size: 14px;
+        }
+        .logout {
+            text-decoration: none;
+            background: linear-gradient(90deg, var(--danger), #df513f);
+            color: #fff;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-weight: 700;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 14px;
+        }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            padding: 16px;
+        }
+        .card h2 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: var(--primary-dark);
+        }
+        form {
+            display: grid;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #cfdadb;
+            font-family: inherit;
+            font-size: 14px;
+        }
+        button {
+            background: linear-gradient(90deg, var(--primary), #1c8a6d);
+            color: #fff;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+        }
+        .small-btn {
+            padding: 7px 10px;
+            font-size: 13px;
+        }
+        .table-wrap {
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        th, td {
+            text-align: left;
+            border-bottom: 1px solid #e9eded;
+            padding: 9px 8px;
+            vertical-align: top;
+        }
+        th {
+            color: var(--text-soft);
+            font-weight: 700;
+        }
+        .state-activa { color: #1d7e49; font-weight: 700; }
+        .state-bloqueada { color: #a15f00; font-weight: 700; }
+        .state-inactiva { color: #7a2d2d; font-weight: 700; }
+        .inline {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+        .inline input, .inline select {
+            min-width: 100px;
+            margin: 0;
+        }
+        @media (max-width: 720px) {
+            .title {
+                font-size: 24px;
             }
-            .logo-institucional {
-                max-width: 190px;
+            .top {
+                padding: 14px;
             }
-            h1 {
-                font-size: 28px;
-            }
-            p {
-                font-size: 15px;
+            .card {
+                padding: 12px;
             }
         }
     </style>
 </head>
 <body>
-
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             <div class="toast-container">
                 {% for category, message in messages %}
-                    {% if category == 'success' %}
-                        <div class="toast">{{ message }}</div>
-                    {% endif %}
+                    <div class="toast {% if category in ['logout', 'error'] %}toast-error{% elif category == 'info' %}toast-info{% elif category == 'rnf_warn' %}toast-rnf{% else %}toast-success{% endif %}">
+                        {{ message }}
+                    </div>
                 {% endfor %}
             </div>
         {% endif %}
     {% endwith %}
 
-    <div class="welcome-container">
-        <img src="{{ url_for('static', filename='Imagen1.png') }}" alt="Logo Institucional FET" class="logo-institucional">
-        
-        <h1>¡Bienvenido al Sistema!</h1>
-        <p>Ha iniciado sesión correctamente en la plataforma.</p>
+    <div class="page">
+        <div class="top">
+            <div>
+                <h1 class="title">Panel Academico</h1>
+                <p class="meta">Usuario: {{ username }} | Rol: {{ role }}</p>
+            </div>
+            <a href="{{ url_for('logout') }}" class="logout">Cerrar sesion</a>
+        </div>
 
-        <a href="{{ url_for('logout') }}" class="btn-logout">Cerrar Sesión</a>
+        {% if role == 'docente' %}
+            <div class="cards">
+                <div class="card">
+                    <h2>Registrar nota</h2>
+                    <form method="POST" action="{{ url_for('docente_create_nota') }}">
+                        <select name="estudiante_id" required>
+                            <option value="">Seleccione estudiante</option>
+                            {% for est in estudiantes %}
+                                <option value="{{ est.id }}">{{ est.username }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="curso_id" required>
+                            <option value="">Seleccione curso</option>
+                            {% for curso in cursos %}
+                                <option value="{{ curso.id }}">{{ curso.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="number" step="0.01" min="0" max="20" name="valor" placeholder="Nota (0-20)" required>
+                        <button type="submit">Guardar nota</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h2>Registrar inasistencia</h2>
+                    <form method="POST" action="{{ url_for('docente_create_inasistencia') }}">
+                        <select name="estudiante_id" required>
+                            <option value="">Seleccione estudiante</option>
+                            {% for est in estudiantes %}
+                                <option value="{{ est.id }}">{{ est.username }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="curso_id" required>
+                            <option value="">Seleccione curso</option>
+                            {% for curso in cursos %}
+                                <option value="{{ curso.id }}">{{ curso.nombre }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="date" name="fecha" required>
+                        <input type="text" name="motivo" placeholder="Motivo (opcional)">
+                        <button type="submit">Guardar inasistencia</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="card">
+            <h2>{% if role == 'estudiante' %}Mis notas{% else %}Notas{% endif %}</h2>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            {% if role != 'estudiante' %}<th>Estudiante</th>{% endif %}
+                            {% if role == 'admin' %}<th>Docente</th>{% endif %}
+                            <th>Curso</th>
+                            <th>Valor</th>
+                            <th>Estado</th>
+                            <th>Actualizado</th>
+                            {% if role in ['docente', 'admin'] %}<th>Editar</th>{% endif %}
+                            {% if role == 'admin' %}<th>Cambiar estado</th>{% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for nota in notas %}
+                            <tr>
+                                <td>{{ nota.id }}</td>
+                                {% if role != 'estudiante' %}<td>{{ nota.estudiante }}</td>{% endif %}
+                                {% if role == 'admin' %}<td>{{ nota.docente }}</td>{% endif %}
+                                <td>{{ nota.curso }}</td>
+                                <td>{{ '%.2f'|format(nota.valor) }}</td>
+                                <td>
+                                    <span class="state-{{ nota.estado }}">{{ nota.estado }}</span>
+                                </td>
+                                <td>{{ nota.actualizado_en }}</td>
+
+                                {% if role == 'docente' %}
+                                    <td>
+                                        <form class="inline" method="POST" action="{{ url_for('docente_edit_nota', nota_id=nota.id) }}">
+                                            <input type="number" step="0.01" min="0" max="20" name="valor" placeholder="Nueva" required>
+                                            <button class="small-btn" type="submit">Actualizar</button>
+                                        </form>
+                                    </td>
+                                {% elif role == 'admin' %}
+                                    <td>
+                                        <form class="inline" method="POST" action="{{ url_for('admin_edit_nota', nota_id=nota.id) }}">
+                                            <input type="number" step="0.01" min="0" max="20" name="valor" placeholder="Nuevo" required>
+                                            <button class="small-btn" type="submit">Actualizar</button>
+                                        </form>
+                                    </td>
+                                {% endif %}
+
+                                {% if role == 'admin' %}
+                                    <td>
+                                        <form class="inline" method="POST" action="{{ url_for('admin_update_estado_nota', nota_id=nota.id) }}">
+                                            <select name="estado" required>
+                                                <option value="activa">activa</option>
+                                                <option value="bloqueada">bloqueada</option>
+                                                <option value="inactiva">inactiva</option>
+                                            </select>
+                                            <button class="small-btn" type="submit">Aplicar</button>
+                                        </form>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="10">No hay notas registradas.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% if role in ['docente', 'estudiante'] %}
+            <div class="card">
+                <h2>{% if role == 'estudiante' %}Mis inasistencias{% else %}Inasistencias registradas{% endif %}</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                {% if role == 'docente' %}<th>Estudiante</th>{% endif %}
+                                {% if role == 'estudiante' %}<th>Docente</th>{% endif %}
+                                <th>Curso</th>
+                                <th>Fecha</th>
+                                <th>Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in inasistencias %}
+                                <tr>
+                                    <td>{{ item.id }}</td>
+                                    {% if role == 'docente' %}<td>{{ item.estudiante }}</td>{% endif %}
+                                    {% if role == 'estudiante' %}<td>{{ item.docente }}</td>{% endif %}
+                                    <td>{{ item.curso }}</td>
+                                    <td>{{ item.fecha }}</td>
+                                    <td>{{ item.motivo or '-' }}</td>
+                                </tr>
+                            {% else %}
+                                <tr><td colspan="6">No hay inasistencias registradas.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if role == 'admin' %}
+            <div class="card">
+                <h2>Auditoria de notas</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID Log</th>
+                                <th>ID Nota</th>
+                                <th>Usuario</th>
+                                <th>Fecha</th>
+                                <th>Valor anterior</th>
+                                <th>Valor nuevo</th>
+                                <th>Estado anterior</th>
+                                <th>Estado nuevo</th>
+                                <th>Detalle</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for log in historial %}
+                                <tr>
+                                    <td>{{ log.id }}</td>
+                                    <td>{{ log.nota_id }}</td>
+                                    <td>{{ log.usuario }}</td>
+                                    <td>{{ log.fecha }}</td>
+                                    <td>{{ '-' if log.valor_anterior is none else ('%.2f'|format(log.valor_anterior)) }}</td>
+                                    <td>{{ '-' if log.valor_nuevo is none else ('%.2f'|format(log.valor_nuevo)) }}</td>
+                                    <td>{{ log.estado_anterior or '-' }}</td>
+                                    <td>{{ log.estado_nuevo or '-' }}</td>
+                                    <td>{{ log.detalle }}</td>
+                                </tr>
+                            {% else %}
+                                <tr><td colspan="9">No hay registros de auditoria.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
     </div>
 
     <script>
         window.addEventListener('load', function() {
             document.querySelectorAll('.toast').forEach(function(toast, index) {
-                var delay = 3200 + (index * 250);
+                var delay = 2800 + (index * 220);
 
                 window.setTimeout(function() {
                     toast.classList.add('toast-hide');
-
                     window.setTimeout(function() {
                         toast.remove();
                     }, 250);
@@ -204,6 +412,5 @@
             });
         });
     </script>
-
 </body>
 </html>

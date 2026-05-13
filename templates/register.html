@@ -105,7 +105,23 @@
             transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
             background-color: #ffffff;
         }
+        .form-group select {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #d0dbdc;
+            border-radius: 11px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+            background-color: #ffffff;
+        }
         .form-group input:focus {
+            outline: none;
+            border-color: #57a992;
+            box-shadow: 0 0 0 4px rgba(87, 169, 146, 0.2);
+            transform: translateY(-1px);
+        }
+        .form-group select:focus {
             outline: none;
             border-color: #57a992;
             box-shadow: 0 0 0 4px rgba(87, 169, 146, 0.2);
@@ -195,6 +211,14 @@
             <div class="form-group">
                 <label for="email">Correo electrónico</label>
                 <input type="email" id="email" name="email" value="{{ form_data.email }}" autocomplete="off" class="{{ 'input-error' if 'email' in empty_fields else '' }}">
+            </div>
+            <div class="form-group">
+                <label for="role">Rol</label>
+                <select id="role" name="role">
+                    <option value="estudiante" {% if form_data.role == 'estudiante' %}selected{% endif %}>Estudiante</option>
+                    <option value="docente" {% if form_data.role == 'docente' %}selected{% endif %}>Docente</option>
+                    <option value="admin" {% if form_data.role == 'admin' %}selected{% endif %}>Administrador</option>
+                </select>
             </div>
             <div class="form-group">
                 <label for="password">Contraseña</label>
